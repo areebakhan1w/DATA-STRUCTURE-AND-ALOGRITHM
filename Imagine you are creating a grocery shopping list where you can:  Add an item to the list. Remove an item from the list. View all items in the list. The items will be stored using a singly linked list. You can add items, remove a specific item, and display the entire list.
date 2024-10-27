@@ -1,0 +1,106 @@
+TASK :
+Imagine you are creating a grocery shopping list where you can:
+
+Add an item to the list.
+Remove an item from the list.
+View all items in the list.
+The items will be stored using a singly linked list.
+You can add items, remove a specific item,
+and display the entire list.
+
+
+#include<iostream>
+using namespace std;
+// Node structure for the linked list
+class Node {
+public:
+ string item;
+ Node* next;
+
+ Node(string itemName) {
+ item = itemName;
+ next = nullptr;
+ }
+};
+// Linked list class for managing the shopping list
+class ShoppingList {
+private:
+ Node* head;
+
+public:
+ ShoppingList() {
+ head = nullptr;
+ }
+ // Add item to the list
+ void addItem(string itemName) {
+ Node* newNode = new Node(itemName);
+ if (head == nullptr) {
+ head = newNode;
+ } else {
+ Node* temp = head;
+ while (temp->next != nullptr) {
+ temp = temp->next;
+ }
+ temp->next = newNode;
+ }
+ cout << itemName << " added to the shopping list." << endl;
+ }
+ // Remove item from the list
+ void removeItem(string itemName) {
+ if (head == nullptr) {
+ cout << "Shopping list is empty." << endl;
+ return;
+ }
+
+ if (head->item == itemName) {
+ Node* temp = head;
+ head = head->next;
+ delete temp;
+ cout << itemName << " removed from the shopping list." << endl;
+ return;
+ }
+
+ Node* current = head;
+ Node* previous = nullptr;
+
+ while (current != nullptr && current->item != itemName) {
+ previous = current;
+ current = current->next;
+ }
+
+ if (current == nullptr) {
+ cout << itemName << " not found in the shopping list." << endl;
+ } else {
+ previous->next = current->next;
+ delete current;
+ cout << itemName << " removed from the shopping list." << endl;
+ }
+ }
+ // Display all items in the shopping list
+ void viewItems() {
+ if (head == nullptr) {
+ cout << "Shopping list is empty." << endl;
+ return;
+ }
+
+ Node* temp = head;
+ cout << "Your shopping list: " << endl;
+ while (temp != nullptr) {
+ cout << "- " << temp->item << endl;
+ temp = temp->next;
+ }
+ }
+};
+int main() {
+ ShoppingList list;
+
+ list.addItem("Apples");
+ list.addItem("Bananas");
+ list.addItem("Oranges");
+ list.viewItems(); // Shows all items
+
+ list.removeItem("Bananas");
+ list.viewItems(); // Shows the list after removing Bananas
+
+ return 0;
+}
