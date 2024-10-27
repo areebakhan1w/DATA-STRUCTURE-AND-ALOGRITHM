@@ -1,0 +1,82 @@
+Task :
+Deletion at start and end according to user.
+Code
+#include<iostream>
+using namespace std;
+struct Node{
+int data;
+Node*next;
+Node*prev;
+};
+Node*head;
+void deleteatend()
+{
+if(head==nullptr){
+cout<<"List is empty!\n";
+return;
+}
+Node *temp=head;
+while(temp->next!=nullptr){
+temp=temp->next;
+}
+if(temp->prev!=nullptr){
+temp->prev->next=nullptr;
+}
+else
+{
+head=nullptr;
+}
+delete temp;
+}
+void deleteatstart(){
+if(head==nullptr){
+cout<<"List is empty!\n";
+return;
+}
+Node *temp=head;
+head=head->next;
+if(head!=nullptr){
+head->prev=nullptr;
+}
+delete temp;
+}
+void print(){
+cout<<"Elements in doubly linked list are:\n";
+Node *temp=head;
+while(temp!=nullptr){
+cout<<temp->data<<" ";
+temp=temp->next;
+}
+}
+int main()
+{ int choice;
+Node n1,n2,n3;
+cout<<"Enter the value of node 1: ";
+cin>>n1.data;
+n1.prev=nullptr;
+n1.next=&n2;
+cout<<"Enter the value of node 2: ";
+cin>>n2.data;
+n2.prev=&n1;
+n2.next=&n3;
+cout<<"Enter the value of node 3: ";
+cin>>n3.data;
+n3.prev=&n2;
+n3.next=nullptr;
+head=&n1;
+print();
+cout<<endl;
+cout<<"What do you want?\n1.Deletion at Start\n2.Deletion at end\n";
+cin>>choice;
+ if (choice==1){
+
+ deleteatstart();
+
+}
+else
+{
+deleteatend();
+
+}
+print();
+}
