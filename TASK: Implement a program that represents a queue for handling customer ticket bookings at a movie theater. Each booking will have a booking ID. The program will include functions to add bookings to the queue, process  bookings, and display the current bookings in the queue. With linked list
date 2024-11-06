@@ -1,0 +1,105 @@
+Implement a program that represents a queue for handling customer ticket bookings at a movie theater. Each booking will have a booking ID.
+The program will include functions to add bookings to the queue, process  bookings, and display the current bookings in the queue. With linked list
+CODE:
+    #include <iostream>
+using namespace std;
+
+struct BookingNode {
+    int bookingID;
+    BookingNode* next;
+};
+
+class BookingQueue {
+private:
+    BookingNode* front;      BookingNode* rear;   
+
+public:
+    BookingQueue() {
+        front = rear = nullptr;
+    }
+
+   
+    void enqueue(int id) {
+        BookingNode* newNode = new BookingNode();
+        newNode->bookingID = id;
+        newNode->next = nullptr;
+
+        if (rear == nullptr) {
+            front = rear = newNode;
+        } else {
+                        rear->next = newNode;
+            rear = newNode;
+        }
+
+        cout << "Booking ID " << id << " added to the queue.\n";
+    }
+
+    void dequeue() {
+        if (front == nullptr) {
+            cout << "The queue is empty. No bookings to process.\n";
+            return;
+        }
+
+        BookingNode* temp = front;
+        front = front->next;
+
+        if (front == nullptr) {
+            rear = nullptr; // If queue becomes empty, reset rear
+        }
+
+        cout << "Processing Booking ID " << temp->bookingID << ".\n";
+        delete temp;
+    }
+
+    
+    void displayQueue() {
+        if (front == nullptr) {
+            cout << "The queue is empty. No current bookings.\n";
+            return;
+        }
+
+        BookingNode* temp = front;
+        cout << "Current Bookings in Queue: ";
+        while (temp != nullptr) {
+            cout << temp->bookingID << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+        ~BookingQueue() {
+        while (front != nullptr) {
+            BookingNode* temp = front;
+            front = front->next;
+            delete temp;
+        }
+    }
+};
+
+int main() {
+    BookingQueue queue;
+    int choice, bookingID;
+
+    while (true) {
+        cout << "\n1. Add booking\n2. Process booking\n3. Display bookings\n4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Enter Booking ID: ";
+            cin >> bookingID;
+            queue.enqueue(bookingID);
+        } else if (choice == 2) {
+            queue.dequeue();
+        } else if (choice == 3) {
+            queue.displayQueue();
+        } else if (choice == 4) {
+            cout << "Exiting program.\n";
+            break;
+        } else {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+
+    return 0;
+}
