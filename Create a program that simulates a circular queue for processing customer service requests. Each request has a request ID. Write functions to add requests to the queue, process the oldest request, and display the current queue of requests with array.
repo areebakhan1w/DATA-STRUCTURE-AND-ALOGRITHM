@@ -1,0 +1,88 @@
+Create a program that simulates a circular queue for processing customer service requests. Each request has a request ID.
+Write functions to add requests to the queue, process the oldest request, and display the current queue of requests with array.
+CODE:
+#include <iostream>
+using namespace std;
+
+#define MAX 5
+
+class CircularQueue {
+private:
+    int front, rear;
+    int queue[MAX];
+
+public:
+    CircularQueue() : front(-1), rear(-1) {}
+
+    bool isFull() {
+        return ((rear + 1) % MAX == front);
+    }
+
+    bool isEmpty() {
+        return (front == -1);
+    }
+
+    void enqueue(int requestID) {
+        if (isFull()) {
+            cout << "Queue overflow. Cannot add request ID " << requestID << endl;
+            return;
+        }
+        if (isEmpty()) {
+            front = 0;
+        }
+        rear = (rear + 1) % MAX;
+        queue[rear] = requestID;
+        cout << "Added request ID: " << requestID << endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue underflow. No requests to process." << endl;
+            return;
+        }
+        cout << "Processing request ID: " << queue[front] << endl;
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            front = (front + 1) % MAX;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty." << endl;
+            return;
+        }
+        cout << "Current queue: ";
+        int i = front;
+        while (true) {
+            cout << queue[i] << " ";
+            if (i == rear) break;
+            i = (i + 1) % MAX;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    CircularQueue cq;
+
+    cq.enqueue(101);
+    cq.enqueue(102);
+    cq.enqueue(103);
+    cq.enqueue(104);
+    cq.enqueue(105);
+
+    cq.display();
+
+    cq.dequeue();
+    cq.display();
+
+    cq.enqueue(106);
+    cq.display();
+
+    cq.dequeue();
+    cq.display();
+
+    return 0;
+}
