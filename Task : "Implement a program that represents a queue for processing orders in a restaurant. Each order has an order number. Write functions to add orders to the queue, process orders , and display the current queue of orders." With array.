@@ -1,0 +1,105 @@
+Task 1
+"Implement a program that represents a queue for processing orders in a restaurant. 
+Each order has an order number. Write functions to add orders to the queue, process orders , and display the current queue of orders." With array.
+CODE:
+#include <iostream>
+using namespace std;
+
+#define MAX 4
+
+class Queue {
+public:
+    int front, rear;
+    int q_arr[MAX];
+
+    Queue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isFull() {
+        return (rear == MAX - 1);
+    }
+
+    void enqueue(int order_number) {
+        if (isFull()) {
+            cout << "Queue overflow: Cannot add order " << order_number << ".\n";
+            return;
+        }
+        if (front == -1) { 
+            front = 0;
+        }
+        q_arr[++rear] = order_number;
+        cout << "Order " << order_number << " added to the queue.\n";
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Queue underflow: No orders to process.\n";
+            return -1;
+        }
+        int order_number = q_arr[front++];
+        cout << "Processing order " << order_number << ".\n";
+        if (front > rear) {  
+            front = -1;
+            rear = -1;
+        }
+        return order_number;
+    }
+
+    int peek() {
+        if (isEmpty()) {
+            cout << "Queue is empty\n";
+            return -1;
+        }
+        return q_arr[front];
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty\n";
+            return;
+        }
+        cout << "Current orders in the queue: ";
+        for (int i = front; i <= rear; i++) {
+            cout << q_arr[i] << " ";
+        }
+        cout << "\n";
+    }
+};
+
+int main() {
+    Queue orderQueue;
+
+    
+    cout << "Adding orders to the queue:\n";
+    orderQueue.enqueue(109);  
+    orderQueue.enqueue(106);  
+    orderQueue.enqueue(104);  
+    orderQueue.enqueue(108);  
+
+    
+    orderQueue.display();
+
+    
+    cout << "Next order to be processed: Order " << orderQueue.peek() << "\n";
+
+    
+    orderQueue.enqueue(105);
+
+   
+    cout << "\nProcessing orders:\n";
+    while (!orderQueue.isEmpty()) {
+        orderQueue.dequeue();
+        orderQueue.display();  
+    }
+
+    
+    orderQueue.dequeue();
+
+    return 0;
+}
