@@ -1,0 +1,91 @@
+Create a program that uses a circular queue to manage player turns in a game.
+Each player has a player ID. Write functions to add players to the queue, move to the next player's turn, and display the current queue of players with linked list.
+CODE:
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int playerID;
+    Node* next;
+};
+
+class CircularQueue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    CircularQueue() {
+        front = NULL;
+        rear = NULL;
+    }
+
+    bool isEmpty() {
+        return front == NULL;
+    }
+
+    void addPlayer(int playerID) {
+        Node* newNode = new Node();
+        newNode->playerID = playerID;
+        newNode->next = NULL;
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+            rear->next = front;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+            rear->next = front;
+        }
+        cout << "Player " << playerID << " has joined the game.\n";
+    }
+
+    void nextTurn() {
+        if (isEmpty()) {
+            cout << "No players in the game.\n";
+            return;
+        }
+        front = front->next;
+        rear = rear->next;
+        cout << "It's now Player " << front->playerID << "'s turn.\n";
+    }
+
+    void displayPlayers() {
+        if (isEmpty()) {
+            cout << "No players in the game.\n";
+            return;
+        }
+        cout << "Current players in the game: ";
+        Node* current = front;
+        do {
+            cout << current->playerID << " ";
+            current = current->next;
+        } while (current != front);
+        cout << "\n";
+    }
+};
+
+int main() {
+    CircularQueue gameQueue;
+
+    gameQueue.addPlayer(1);
+    gameQueue.addPlayer(2);
+    gameQueue.addPlayer(3);
+    gameQueue.addPlayer(4);
+
+    gameQueue.displayPlayers();
+
+    gameQueue.nextTurn();
+    gameQueue.nextTurn();
+    gameQueue.displayPlayers();
+
+    gameQueue.addPlayer(5);
+    gameQueue.displayPlayers();
+
+    gameQueue.nextTurn();
+    gameQueue.nextTurn();
+    gameQueue.nextTurn();
+
+    return 0;
+}
